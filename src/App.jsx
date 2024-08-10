@@ -7,6 +7,7 @@ function App() {
   const [money, setMoney] = useState(100);
   const [zombieFighters, setZombieFighters] = useState([
     {
+      id: 1,
       name: "Survivor",
       price: 12,
       strength: 6,
@@ -14,6 +15,7 @@ function App() {
       img: "https://via.placeholder.com/150/92c952",
     },
     {
+      id: 2,
       name: "Scavenger",
       price: 10,
       strength: 5,
@@ -21,6 +23,7 @@ function App() {
       img: "https://via.placeholder.com/150/771796",
     },
     {
+      id: 3,
       name: "Shadow",
       price: 18,
       strength: 7,
@@ -77,60 +80,79 @@ function App() {
       img: "https://via.placeholder.com/150/602b9e",
     },
   ]);
+  const [totalStrength, setTotalStrength] = useState(0);
+  const [totalAgility, setTotalAgility] = useState(0);
 
   const handleAddFighter = (event) => {
     if (money >= event.price) {
       setTeam([...team, event]);
       setMoney(money - event.price);
+      setTotalStrength(totalStrength + event.strength);
+      setTotalAgility(totalAgility + event.agility);
     } else {
       console.log("Not enough money");
+    }
+  };
+  const handleRemoveFighter = (index) => {
+    const fighterToRemove = team[index];
+    if (fighterToRemove) {
+      // Remove the fighter from the team
+      const newTeam = team.filter((_, i) => i !== index);
+      // Update the team, money, strength, and agility
+      setTeam(newTeam);
+      setMoney(money + fighterToRemove.price);
+      setTotalStrength(totalStrength - fighterToRemove.strength);
+      setTotalAgility(totalAgility - fighterToRemove.agility);
     }
   };
   return (
     <>
       <h1>Zombie Fighters</h1> <h2>Money : {money}</h2>
-      <h2>Team Strenth: </h2>
-      <h2>Team Agility: </h2>
+      <h2>Team Strenth:{totalStrength} </h2>
+      <h2>Team Agility: {totalStrength}</h2>
       <h2>
         {team.length === 0 ? <h2>Pick some team members!</h2> : <h2>Team :</h2>}{" "}
-        {team.map((event) => (
-          <ul>
-            <li>
-              <img src={event.img}></img>
-            </li>
-            <li>
-              {" "}
-              Name :{fighter.name} , Price :{fighter.price} , Strength :
-              {fighter.strength} , Aligity :{fighter.agility}{" "}
-            </li>
-          </ul>
+        {team.map((event, index) => (
+          <div>
+            <ul>
+              <li>
+                <img src={event.img}></img>
+              </li>
+              <li>
+                Name :{event.name} , Price :{event.price} , Strength :
+                {event.strength} , Aligity :{event.agility}
+              </li>
+              <li>
+                {" "}
+                <button onClick={() => handleRemoveFighter(index)}>
+                  Delete
+                </button>
+              </li>
+            </ul>
+          </div>
         ))}
       </h2>
-      <form>
-        {zombieFighters.map((zombie) => (
-          <ul>
-            <li>
-              {" "}
-              <img src={zombie.img} />{" "}
-            </li>
-            <li> name:{zombie.name}</li>
-            <li>price: {zombie.price}</li>
-            <li>strength: {zombie.strength}</li>
-            <li>agility:{zombie.agility}</li>{" "}
-            <li>
-              {" "}
-              <button
-                onClick={() => {
-                  handleAddFighter(zombie);
-                }}
-              >
-                {" "}
-                Add
-              </button>
-            </li>
-          </ul>
-        ))}
-      </form>
+      {zombieFighters.map((event) => (
+        <ul>
+          <li>
+            {" "}
+            <img src={event.img} />{" "}
+          </li>
+          <li> name:{event.name}</li>
+          <li>price: {event.price}</li>
+          <li>strength: {event.strength}</li>
+          <li>agility:{event.agility}</li>{" "}
+          <li>
+            <button
+              onClick={() => {
+                handleAddFighter(event);
+              }}
+            >
+              Add
+            </button>
+          </li>
+        </ul>
+      ))}
     </>
   );
 }
