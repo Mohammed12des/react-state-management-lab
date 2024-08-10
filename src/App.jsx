@@ -7,7 +7,6 @@ function App() {
   const [money, setMoney] = useState(100);
   const [zombieFighters, setZombieFighters] = useState([
     {
-      id: 1,
       name: "Survivor",
       price: 12,
       strength: 6,
@@ -15,7 +14,6 @@ function App() {
       img: "https://via.placeholder.com/150/92c952",
     },
     {
-      id: 2,
       name: "Scavenger",
       price: 10,
       strength: 5,
@@ -23,7 +21,6 @@ function App() {
       img: "https://via.placeholder.com/150/771796",
     },
     {
-      id: 3,
       name: "Shadow",
       price: 18,
       strength: 7,
@@ -96,9 +93,7 @@ function App() {
   const handleRemoveFighter = (index) => {
     const fighterToRemove = team[index];
     if (fighterToRemove) {
-      // Remove the fighter from the team
       const newTeam = team.filter((_, i) => i !== index);
-      // Update the team, money, strength, and agility
       setTeam(newTeam);
       setMoney(money + fighterToRemove.price);
       setTotalStrength(totalStrength - fighterToRemove.strength);
